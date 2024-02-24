@@ -5,6 +5,7 @@ import 'package:bookbazaar/Widgets/my_text_button.dart';
 import 'package:bookbazaar/Widgets/my_text_field.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -14,7 +15,17 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
   bool isPasswordVisible = true;
+
+  void saveData() {
+    String email = emailController.text.trim();
+    String pass = passwordController.text.trim();
+
+    print('$email and $pass');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +39,6 @@ class _SignInPageState extends State<SignInPage> {
             icon: const Icon(Icons.arrow_back_rounded)),
       ),
       body: SafeArea(
-        //to make page scrollable
         child: CustomScrollView(
           reverse: true,
           slivers: [
@@ -58,11 +68,13 @@ class _SignInPageState extends State<SignInPage> {
                           const SizedBox(
                             height: 60,
                           ),
-                          const MyTextField(
-                            hintText: 'Phone, email or username',
+                          MyTextField(
+                            controller: emailController,
+                            hintText: 'email',
                             inputType: TextInputType.text,
                           ),
                           MyPasswordField(
+                            controller: passwordController,
                             isPasswordVisible: isPasswordVisible,
                             onTap: () {
                               setState(() {
@@ -82,6 +94,7 @@ class _SignInPageState extends State<SignInPage> {
                         ),
                         GestureDetector(
                           onTap: () {
+                            saveData();
                             Navigator.push(
                               context,
                               CupertinoPageRoute(
@@ -103,8 +116,10 @@ class _SignInPageState extends State<SignInPage> {
                     ),
                     MyTextButton(
                       buttonName: 'Sign In',
-                      onTap: () {},
-                      bgColor: Colors.white,
+                      onTap: () {
+                        saveData();
+                      },
+                      bgColor: const Color.fromARGB(255, 155, 129, 129),
                       textColor: Colors.black87,
                     ),
                   ],

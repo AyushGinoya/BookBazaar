@@ -5,11 +5,12 @@ class MyPasswordField extends StatelessWidget {
   const MyPasswordField({
     super.key,
     required this.isPasswordVisible,
-    required this.onTap,
+    required this.onTap, required this.controller,
   });
 
   final bool isPasswordVisible;
   final VoidCallback onTap;
+  final TextEditingController controller;
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +22,7 @@ class MyPasswordField extends StatelessWidget {
         ),
         obscureText: isPasswordVisible,
         keyboardType: TextInputType.text,
+        controller: controller,
         textInputAction: TextInputAction.done,
         decoration: InputDecoration(
           suffixIcon: Padding(

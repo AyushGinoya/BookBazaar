@@ -11,6 +11,13 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController numberController = TextEditingController();
+
+  void saveData() {}
+
   bool passwordVisibility = true;
   @override
   Widget build(BuildContext context) {
@@ -50,19 +57,23 @@ class _RegisterPageState extends State<RegisterPage> {
                           const SizedBox(
                             height: 50,
                           ),
-                          const MyTextField(
+                          MyTextField(
+                            controller: nameController,
                             hintText: 'Name',
                             inputType: TextInputType.name,
                           ),
-                          const MyTextField(
+                          MyTextField(
+                            controller: emailController,
                             hintText: 'Email',
                             inputType: TextInputType.emailAddress,
                           ),
-                          const MyTextField(
+                          MyTextField(
+                            controller: numberController,
                             hintText: 'Phone',
                             inputType: TextInputType.phone,
                           ),
                           MyPasswordField(
+                            controller: passwordController,
                             isPasswordVisible: passwordVisibility,
                             onTap: () {
                               setState(() {
@@ -94,11 +105,11 @@ class _RegisterPageState extends State<RegisterPage> {
                     MyTextButton(
                       buttonName: 'Register',
                       onTap: () {
+                        saveData();
                         Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const NavigationMenu()));
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const NavigationMenu()));
                       },
                       bgColor: Colors.white,
                       textColor: Colors.black87,
