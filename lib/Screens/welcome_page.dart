@@ -1,5 +1,4 @@
 import 'package:bookbazaar/Helper/constant.dart';
-import 'package:bookbazaar/Screens/register_page.dart';
 import 'package:bookbazaar/Screens/signing_page.dart';
 import 'package:bookbazaar/Widgets/my_text_button.dart';
 import 'package:bookbazaar/navigation_menu.dart';
@@ -88,7 +87,7 @@ class WelcomePage extends StatelessWidget {
                           Navigator.push(
                               context,
                               CupertinoPageRoute(
-                                builder: (context) => SignInPage(),
+                                builder: (context) => const SignInPage(),
                               ));
                         },
                         textColor: Colors.white,
