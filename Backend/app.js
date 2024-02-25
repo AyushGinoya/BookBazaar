@@ -1,81 +1,100 @@
-const express = require('express');
-const session = require('express-session');
-const { MongoClient } = require('mongodb');
+const express = require("express");
+const session = require("express-session");
+const { MongoClient } = require("mongodb");
 const app = express();
 const User = require('./models/user');
 const Book = require('./models/book');
 
 const bodyParser = require('body-parser');
 const port = 3000;
-const env = require('dotenv');
-const mongoose = require('mongoose');
-const multer = require('multer');
-const cloudinary = require('cloudinary').v2;
-cloudinary.config({ 
-  cloud_name: 'dspsdpx5c', 
-  api_key: '637215419864166', 
-  api_secret: 'sVB4INWe3v5JHUVzEsLWMbao37s'
+const env = require("dotenv");
+const mongoose = require("mongoose");
+const multer = require("multer");
+const cloudinary = require("cloudinary").v2;
+
+const cors = require("cors");
+
+app.use(
+  cors({
+    origin: "*",
+    allowedHeaders: "X-Requested-With, Content-Type, auth-token",
+  })
+); //Add authentication token header
+
+cloudinary.config({
+  cloud_name: "dspsdpx5c",
+  api_key: "637215419864166",
+  api_secret: "sVB4INWe3v5JHUVzEsLWMbao37s",
 });
 
-
-const upload = multer({ dest: 'uploads/' });
+const upload = multer({ dest: "uploads/" });
 env.config({
-    path: "./config.env"
-})
+  path: "./config.env",
+});
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(session({
-  secret: 'RajPansara', // replace with a secret key
-  resave: false,
-  saveUninitialized: true
-}));
+app.use(
+  session({
+    secret: "RajPansara", // replace with a secret key
+    resave: false,
+    saveUninitialized: true,
+  })
+);
 const { Mongouri } = process.env;
-
+// console.log(Mongouri);
 const connectDB = async () => {
   try {
-      mongoose.set('strictQuery', true);
-      await mongoose.connect(Mongouri);
+    mongoose.set("strictQuery", true);
+    await mongoose.connect(Mongouri);
 
-      console.log('MongoDB is Connected...');
+    console.log("MongoDB is Connected...");
   } catch (err) {
-      console.error(err.message);
-      process.exit(1);
+    console.error(err.message);
+    process.exit(1);
   }
 };
 
 connectDB();
-app.get('/', (req, res) => {
-  res.send('Welcome to my server!');
+app.get("/", (req, res) => {
+  res.send("Welcome to my server!");
 });
 
-app.post('/signup', async (req, res) => {
-    const { name, email, phone, password} = req.body;
-  
-    if (!name || !email || !phone || !password) {
-      return res.status(400).json({ message: 'Please provide all required fields.' });
-    }
-    try {
-      const existingUser = await User.findOne({ email });
-  
-      if (existingUser) {
-        return res.status(409).json({ message: 'User with this email already exists.' });
-      }
-      
+app.post("/signup", async (req, res) => {
+  console.log(req.name);
+  const { name, email, phone, password } = req.body;
+  console.log(req.body);
 
-      const newUser = new User({
-        name,
-        email,
-        phone,
-        password,
-      });
-      await newUser.save();
-  
-      res.status(201).json({ message: 'User registered successfully.', userId: newUser._id });
-    } catch (error) {
-      console.error('Error during signup:', error);
-      res.status(500).json({ message: 'Internal server error.' });
+
+  if (!name || !email || !phone || !password) {
+    return res
+      .status(400)
+      .json({ message: "Please provide all required fields." });
+  }
+  try {
+    const existingUser = await User.findOne({ email });
+
+    if (existingUser) {
+      return res
+        .status(409)
+        .json({ message: "User with this email already exists." });
     }
-  });
+
+    const newUser = new User({
+      name,
+      email,
+      phone,
+      password,
+    });
+    await newUser.save();
+    console.log("mangal");
+    res
+      .status(201)
+      .json({ message: "User registered successfully.", userId: newUser._id });
+  } catch (error) {
+    console.error("Error during signup:", error);
+    res.status(500).json({ message: "Internal server error." });
+  }
+});
 
 
   app.post('/login', async (req, res) => {

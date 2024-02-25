@@ -1,7 +1,6 @@
 import 'package:bookbazaar/Helper/constant.dart';
+import 'package:bookbazaar/Screens/register_page.dart';
 import 'package:bookbazaar/Screens/signing_page.dart';
-import 'package:bookbazaar/Widgets/my_text_button.dart';
-import 'package:bookbazaar/navigation_menu.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -18,6 +17,7 @@ class WelcomePage extends StatelessWidget {
             children: [
               Flexible(
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Center(
                       child: SizedBox(
@@ -52,45 +52,51 @@ class WelcomePage extends StatelessWidget {
                   ],
                 ),
               ),
-              Container(
+              SizedBox(
                 height: 60,
-                decoration: BoxDecoration(
-                  color: Colors.grey[850],
-                  borderRadius: BorderRadius.circular(18),
-                ),
                 child: Row(
                   children: [
                     Expanded(
-                      child: MyTextButton(
-                        bgColor: Colors.white,
-                        buttonName: 'Register',
-                        onTap: () {
-                          // Navigator.push(
-                          //     context,
-                          //     CupertinoPageRoute(
-                          //         builder: (context) => RegisterPage()));
-
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      const NavigationMenu()));
-                        },
-                        textColor: Colors.black87,
-                      ),
-                    ),
-                    Expanded(
-                      child: MyTextButton(
-                        bgColor: Colors.transparent,
-                        buttonName: 'Sign In',
-                        onTap: () {
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          foregroundColor: Colors.black87,
+                          backgroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18.0),
+                          ),
+                          padding: EdgeInsets.zero, // Add this line
+                          // Apply the same height as the Container
+                        ),
+                        onPressed: () {
                           Navigator.push(
                               context,
                               CupertinoPageRoute(
-                                builder: (context) => const SignInPage(),
-                              ));
+                                  builder: (context) => const RegisterPage()));
                         },
-                        textColor: Colors.white,
+                        child: const Text('Register', style: kButtonText),
+                      ),
+                    ),
+                    Expanded(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          foregroundColor: Colors.white,
+                          backgroundColor: Colors.transparent,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18.0),
+                            side: const BorderSide(
+                                color: Colors.white), // Border Color
+                          ),
+                          padding: EdgeInsets.zero, // Add this line
+                          // Apply the same height as the Container
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              CupertinoPageRoute(
+                                  builder: (context) => const SignInPage()));
+                        },
+                        child: Text('Sign In',
+                            style: kButtonText.copyWith(color: Colors.white)),
                       ),
                     ),
                   ],

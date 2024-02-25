@@ -22,9 +22,7 @@ class _ProfileState extends State<Profile> {
   final TextEditingController _emailController = TextEditingController();
 
   UserModel user = UserModel(
-      name: 'John Doe',
-      phoneNumber: '1234567890',
-      email: 'john.doe@example.com');
+      name: 'John Doe', phone: '1234567890', email: 'john.doe@example.com');
 
   @override
   void dispose() {
@@ -43,16 +41,16 @@ class _ProfileState extends State<Profile> {
   @override
   void initState() {
     super.initState();
-    _nameController.text = user.name;
-    _phoneController.text = user.phoneNumber;
-    _emailController.text = user.email;
+    _nameController.text = user.name!;
+    _phoneController.text = user.phone!;
+    _emailController.text = user.email!;
   }
 
   void _saveUserInfo() {
     setState(() {
       user = UserModel(
         name: _nameController.text,
-        phoneNumber: _phoneController.text,
+        phone: _phoneController.text,
         email: _emailController.text,
       );
       _isEditing = false;
