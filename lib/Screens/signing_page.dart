@@ -1,11 +1,8 @@
 import 'package:bookbazaar/Helper/constant.dart';
 import 'package:bookbazaar/Screens/register_page.dart';
-import 'package:bookbazaar/Widgets/my_password_field.dart';
-import 'package:bookbazaar/Widgets/my_text_button.dart';
-import 'package:bookbazaar/Widgets/my_text_field.dart';
+import 'package:bookbazaar/navigation_menu.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -15,15 +12,15 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
   bool isPasswordVisible = true;
 
   void saveData() {
     String email = emailController.text.trim();
     String pass = passwordController.text.trim();
 
-    print('$email and $pass');
+    // Implement your data saving functionality here
   }
 
   @override
@@ -58,69 +55,132 @@ class _SignInPageState extends State<SignInPage> {
                             "Welcome back.",
                             style: kHeadline,
                           ),
-                          const SizedBox(
-                            height: 10,
-                          ),
+                          const SizedBox(height: 10),
                           const Text(
                             "You've been missed!",
                             style: kBodyText2,
                           ),
-                          const SizedBox(
-                            height: 60,
-                          ),
-                          MyTextField(
+                          const SizedBox(height: 60),
+                          TextField(
                             controller: emailController,
-                            hintText: 'email',
-                            inputType: TextInputType.text,
+                            decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.all(
+                                  20), // Same padding as password field
+                              hintText: 'Email',
+                              hintStyle:
+                                  kBodyText, // Assuming kBodyText is defined in your constants
+                              // Email field does not need a visibility icon, so no suffixIcon here
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                  color: Colors
+                                      .grey, // Same border color as password field
+                                  width: 1,
+                                ),
+                                borderRadius: BorderRadius.circular(
+                                    18), // Same border radius as password field
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                  color: Colors
+                                      .white, // Same border color when focused
+                                  width: 1,
+                                ),
+                                borderRadius: BorderRadius.circular(
+                                    18), // Same border radius when focused
+                              ),
+                            ),
+                            keyboardType: TextInputType.emailAddress,
+                            style: kBodyText.copyWith(
+                                color: Colors
+                                    .white), // Same text style as password field
                           ),
-                          MyPasswordField(
+                          const SizedBox(height: 20),
+                          TextField(
                             controller: passwordController,
-                            isPasswordVisible: isPasswordVisible,
-                            onTap: () {
-                              setState(() {
-                                isPasswordVisible = !isPasswordVisible;
-                              });
-                            },
+                            obscureText: isPasswordVisible,
+                            decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.all(20),
+                              hintText: 'Password',
+                              hintStyle: kBodyText,
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  isPasswordVisible
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
+                                  color: Colors.grey,
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    isPasswordVisible = !isPasswordVisible;
+                                  });
+                                },
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                  color: Colors.grey,
+                                  width: 1,
+                                ),
+                                borderRadius: BorderRadius.circular(18),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                  color: Colors.white,
+                                  width: 1,
+                                ),
+                                borderRadius: BorderRadius.circular(18),
+                              ),
+                            ),
+                            style: kBodyText.copyWith(color: Colors.white),
                           ),
                         ],
                       ),
                     ),
+                    const SizedBox(height: 20),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const Text(
-                          "Dont't have an account? ",
+                          "Don't have an account? ",
                           style: kBodyText,
                         ),
                         GestureDetector(
                           onTap: () {
-                            saveData();
                             Navigator.push(
                               context,
                               CupertinoPageRoute(
-                                builder: (context) => RegisterPage(),
+                                builder: (context) => const RegisterPage(),
                               ),
                             );
                           },
                           child: Text(
                             'Register',
-                            style: kBodyText.copyWith(
-                              color: Colors.white,
-                            ),
+                            style: kBodyText.copyWith(color: Colors.white),
                           ),
-                        )
+                        ),
                       ],
                     ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    MyTextButton(
-                      buttonName: 'Sign In',
-                      onTap: () {
-                        saveData();
+                    const SizedBox(height: 20),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18.0),
+                        ),
+                      ),
+                      onPressed: (){
+                        Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const NavigationMenu()));
                       },
-                      bgColor: const Color.fromARGB(255, 155, 129, 129),
-                      textColor: Colors.black87,
+                      child: const Text(
+                        'Sign In',
+                        style: TextStyle(
+                          color: Colors.black87,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
                   ],
                 ),
