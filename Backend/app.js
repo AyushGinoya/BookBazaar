@@ -3,6 +3,8 @@ const session = require('express-session');
 const { MongoClient } = require('mongodb');
 const app = express();
 const User = require('./models/user');
+const Book = require('./models/book');
+
 const bodyParser = require('body-parser');
 const port = 3000;
 const env = require('dotenv');
@@ -139,6 +141,45 @@ app.post('/signup', async (req, res) => {
       res.status(500).json({ error: 'Internal server error.' });
     }
   });
+
+  app.post('/add-book', async (req, res) => {
+    const { name, author, price } = req.body;
+  
+    // Validate that all required fields are provided
+    if (!name || !author || !price) {
+      return res.status(400).json({ error: 'Please provide all required fields.' });
+    }
+  
+    try {
+      // Create a new book instance using the Book model
+      const newBook = new Book({
+        name,
+        author,
+        price,
+      });
+  
+      // Save the new book to the database
+      await newBook.save();
+  
+      res.status(201).json({ message: 'Book added successfully.', book: newBook });
+    } catch (error) {
+      console.error('Error adding book:', error);
+      res.status(500).json({ error: 'Internal server error.' });
+    }
+  });
+
+  // Route to get all books
+app.get('/get-all-books', async (req, res) => {
+  try {
+    // Retrieve all books from the database
+    const allBooks = await Book.find();
+
+    res.status(200).json({ books: allBooks });
+  } catch (error) {
+    console.error('Error retrieving books:', error);
+    res.status(500).json({ error: 'Internal server error.' });
+  }
+});
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
