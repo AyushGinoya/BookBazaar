@@ -1,5 +1,7 @@
 import 'package:bookbazaar/Helper/constant.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class AddBook extends StatefulWidget {
   const AddBook({super.key});
@@ -19,6 +21,28 @@ class _AddBookState extends State<AddBook> {
     _authorNameController.dispose();
     _priceController.dispose();
     super.dispose();
+  }
+
+  Future<void> createUser() async {
+  
+
+   
+
+    var url = Uri.parse('http://localhost:3000/signup');
+    var response = await http.post(
+      url,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(userData),
+    );
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Username cannot be empty")));
+    } else {
+      throw Exception('Failed to create user. Error: ${response.body}');
+    }
   }
 
   void _addBook() {
