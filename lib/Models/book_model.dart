@@ -18,7 +18,8 @@ class Book {
     img_url_book = map['img_url_book'];
     name = map['name'];
     author = map['author'];
-    price = map['price'];
+    price =
+        (map['price'] is int) ? (map['price'] as int).toDouble() : map['price'];
   }
 
   Map<String, dynamic> toJson() {

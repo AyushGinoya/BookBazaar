@@ -28,11 +28,11 @@ class CustomBookCard extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              // Image.network(imageUrl,
-              //     width: 100, height: 150, fit: BoxFit.cover),
-              Image.asset(
-                imageUrl,
-              ),
+              Image.network(imageUrl,
+                  width: 100, height: 150, fit: BoxFit.cover),
+              // Image.asset(
+              //   imageUrl,
+              // ),
               const SizedBox(height: 8),
               Text(bookName,
                   style: const TextStyle(
