@@ -1,6 +1,9 @@
+import 'dart:convert';
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:bookbazaar/Models/book_model.dart';
-import 'package:bookbazaar/Helper/custom_card.dart'; // Make sure this path is correct
+import 'package:bookbazaar/Helper/custom_card.dart';
+import 'package:http/http.dart' as http;
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -10,32 +13,51 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  final List<Book> books = [
-    Book(
-      id: '456',
-      imageUrl:
-          'assets/images/lovepik-learning-english-books-material-png-image_400234770_wh1200.png',
-      name: 'Om ni Mahanta',
-      author: 'John Doe',
-      price: 39.99,
-    ),
-  ];
+  List<Book> books = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchBooks();
+  }
+
+  Future<void> fetchBooks() async {
+    var url = Uri.parse('http://10.0.2.2:3000/get-all-books');
+    try {
+      final response = await http.get(url);
+      if (response.statusCode == 200) {
+        final jsonResponse = json.decode(response.body);
+        log(jsonResponse);
+
+        final booksJson = jsonResponse['books'] as List;
+        setState(() {
+          books = booksJson.map((json) => Book.fromJson(json)).toList();
+        });
+      } else {
+        throw Exception('Failed to load books from the server');
+      }
+    } catch (e) {
+      log(e.toString());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: ListView.builder(
-        itemCount: books.length,
-        itemBuilder: (context, index) {
-          final book = books[index];
-          return CustomBookCard(
-            id: book.id,
-            imageUrl: book.imageUrl,
-            bookName: book.name,
-            authorName: book.author,
-            price: book.price,
-          );
-        },
+    return MaterialApp(
+      home: SafeArea(
+        child: ListView.builder(
+          itemCount: books.length,
+          itemBuilder: (context, index) {
+            final book = books[index];
+            return CustomBookCard(
+              id: book.id ?? 'Unknown ID',
+              imageUrl: book.img_url_book ?? 'assets/default_image.png',
+              bookName: book.name ?? 'Unknown Title',
+              authorName: book.author ?? 'Unknown Author',
+              price: book.price ?? 0.0,
+            );
+          },
+        ),
       ),
     );
   }

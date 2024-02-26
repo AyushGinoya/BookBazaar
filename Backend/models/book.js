@@ -13,6 +13,10 @@ const bookSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  img_url_book : {
+    type:String,
+    required: true,
+  }
 });
 
 const Book = mongoose.model('Book', bookSchema);

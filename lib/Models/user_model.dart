@@ -23,7 +23,7 @@ class UserModel {
   Map<String, dynamic> toJson() {
     return {
       'name': name,
-      'phone': phone,
+      'phoneNumber': phone,
       'email': email,
       'password': password,
     };

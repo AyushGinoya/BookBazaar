@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bookbazaar/Helper/constant.dart';
 import 'package:bookbazaar/Models/user_model.dart';
 import 'package:bookbazaar/navigation_menu.dart';
@@ -28,7 +30,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
     var userData = user.toJson();
 
-    var url = Uri.parse('http://localhost:3000/signup');
+    var url = Uri.parse('http://10.0.2.2:3000/signup');
     var response = await http.post(
       url,
       headers: <String, String>{
@@ -38,7 +40,7 @@ class _RegisterPageState extends State<RegisterPage> {
     );
 
     if (response.statusCode == 200 || response.statusCode == 201) {
-      print("hello");
+      log("hello");
       Navigator.push(context,
           MaterialPageRoute(builder: (context) => const NavigationMenu()));
     } else {

@@ -1,31 +1,30 @@
 class Book {
-  final String id;
-  final String imageUrl;
-  final String name;
-  final String author;
-  final double price;
+  String? id;
+  String? img_url_book;
+  String? name;
+  String? author;
+  double? price;
 
   Book({
-    required this.id,
-    required this.imageUrl,
-    required this.name,
-    required this.author,
-    required this.price,
+    this.id,
+    this.img_url_book,
+    this.name,
+    this.author,
+    this.price,
   });
 
-  factory Book.fromJson(Map<String, dynamic> json) {
-    return Book(
-        id: json['id'] as String,
-        imageUrl: json['imageUrl'] as String,
-        name: json['name'] as String,
-        author: json['author'] as String,
-        price: (json['price'] as num).toDouble());
+  Book.fromJson(Map<String, dynamic> map) {
+    id = map['id'];
+    img_url_book = map['img_url_book'];
+    name = map['name'];
+    author = map['author'];
+    price = map['price'];
   }
 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'imageUrl': imageUrl,
+      'img_url_book': img_url_book,
       'name': name,
       'author': author,
       'price': price,
